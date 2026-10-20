@@ -1,0 +1,24 @@
+# Local secrets and installation state
+.env
+.env.*
+!.env.example
+config/config.local.php
+config/installed.lock
+*.pem
+*.key
+*.p12
+*.pfx
+*.sql.gz
+*.bak
+*.backup
+*.zip
+*.tar
+*.gz
+
+# Logs / OS / editor
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+node_modules/

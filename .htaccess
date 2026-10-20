@@ -1,0 +1,5 @@
+# XAMPP / Apache hosting; Docker additionally enforces server-level rules.
+Options -Indexes
+<FilesMatch "(?i)^(?:\..*|Dockerfile|docker-compose(?:\..*)?|README(?:\..*)?|start\.(?:sh|bat)|.*\.(?:sql|md|log|bak|backup|ini|ya?ml|conf|key|pem))$">
+    Require all denied
+</FilesMatch>

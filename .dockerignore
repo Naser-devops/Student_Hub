@@ -1,0 +1,25 @@
+# Prevent local credentials and repository metadata from entering the image build context
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+config/config.local.php
+config/installed.lock
+*.log
+*.bak
+*.backup
+*.zip
+*.tar
+*.gz
+*.sql.gz
+*.pem
+*.key
+.vscode
+.idea
+node_modules
+README.md
+DEPLOY_AWS_AR.md
+SECURITY_FIXES_AR.md
+start.bat
+start.sh

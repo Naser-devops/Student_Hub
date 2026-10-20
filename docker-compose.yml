@@ -1,0 +1,39 @@
+# Demo deployment: local-only HTTP. Use an authenticated SSM tunnel for testing;
+# add a TLS reverse proxy before any public access. Run: docker compose up -d --build
+services:
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      DB_HOST: db
+      DB_NAME: studenthub_db
+      DB_USER: studenthub
+      DB_PASS: ${DB_PASSWORD:?Set DB_PASSWORD in your untracked .env file}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: studenthub_db
+      MYSQL_USER: studenthub
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in your untracked .env file}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in your untracked .env file}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          mysql -h 127.0.0.1 -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE" -e "SELECT 1" >/dev/null 2>&1
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 25s
+    restart: unless-stopped
+
+volumes:
+  db_data:
