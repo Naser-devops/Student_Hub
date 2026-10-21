@@ -1,49 +1,66 @@
-
 <div align="center">
 🎓 StudentHub
 Learn. Explore. Grow.
-A modern student learning platform built with PHP & MySQL and deployed on AWS with a private database architecture.
+A modern learning platform — built with PHP, containerized with Docker, and deployed on AWS.
 
-<p> <img src="https://img.shields.io/badge/PHP-Backend-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP" /> <img src="https://img.shields.io/badge/Docker-Containerized-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker" /> <img src="https://img.shields.io/badge/AWS-Cloud-FF9900?style=flat-square&logo=amazonwebservices&logoColor=white" alt="AWS" /> <img src="https://img.shields.io/badge/RDS-MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="Amazon RDS MySQL" /> </p>
-🌐 Live Website · 🏗️ Architecture · 📸 Screenshots
+<p> <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" /> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" /> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" /> <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=FF9900" alt="AWS" /> </p>
+Explore the App  •  View AWS Architecture  •  Tech Stack
 
 </div>
-✨ About the Project
-StudentHub is a responsive learning platform where students can discover courses, manage their learning, and track enrollments. An admin dashboard provides tools for managing course content.
+✦ Overview
+StudentHub is a responsive web application for discovering courses and managing student learning. It includes student authentication, course enrollment, personal dashboards, and an administration panel.
 
-Beyond the application itself, this project demonstrates a two-tier AWS deployment: a Dockerized PHP web application on Amazon EC2 connected to Amazon RDS MySQL within private subnets.
+The project also demonstrates a practical two-tier AWS architecture: a containerized PHP application on Amazon EC2, connected to Amazon RDS MySQL in private subnets.
 
 📸 Project Preview
-<div align="center"> <img src="assets/images/01-landing.png" alt="StudentHub landing page" width="100%" /> <sub>Landing page</sub> </div>
-<table> <tr> <td align="center" width="50%"><img src="assets/images/02-student-dashboard.png" alt="Student dashboard" width="100%" /><br /><b>Student Dashboard</b></td> <td align="center" width="50%"><img src="assets/images/03-course-catalog.png" alt="Course catalog" width="100%" /><br /><b>Course Catalog</b></td> </tr> <tr> <td align="center"><img src="assets/images/04-course-learning.png" alt="Course learning page" width="100%" /><br /><b>Learning Experience</b></td> <td align="center"><img src="assets/images/05-admin-panel.png" alt="Admin panel" width="100%" /><br /><b>Admin Panel</b></td> </tr> </table> <details> <summary><b>➕ View course management preview</b></summary> <br /> <img src="assets/images/06-add-course.png" alt="Add course screen" width="100%" /> </details>
-🏗️ AWS Architecture
+<div align="center"> <img src="assets/images/01-landing.png" alt="StudentHub — Landing Page" width="100%" /> <br /> <sub><b>01 / Landing Experience</b></sub> </div>
+<table> <tr> <td align="center" width="50%"> <img src="assets/images/02-student-dashboard.png" alt="Student Dashboard" width="100%" /> <br /><b>02 / Student Dashboard</b> </td> <td align="center" width="50%"> <img src="assets/images/03-course-catalog.png" alt="Course Catalog" width="100%" /> <br /><b>03 / Course Catalog</b> </td> </tr> <tr> <td align="center"> <img src="assets/images/04-course-learning.png" alt="Course Learning" width="100%" /> <br /><b>04 / Learning Experience</b> </td> <td align="center"> <img src="assets/images/05-admin-panel.png" alt="Admin Panel" width="100%" /> <br /><b>05 / Admin Dashboard</b> </td> </tr> </table> <details> <summary><b>See more — Course Management</b></summary> <br /> <p align="center"> <img src="assets/images/06-add-course.png" alt="Add Course" width="90%" /> </p> </details>
+☁️ AWS Architecture
+<div align="center"> <img src="assets/images/StudentHub%20AWS%20Architecture%20Diagram.png" alt="StudentHub AWS Architecture Diagram" width="100%" /> <br /> <sub>Architecture overview — public web layer and private database layer</sub> </div>
+Request flow
 
-
-Request flow: Browser → DuckDNS → Elastic IP → Caddy (HTTPS) → EC2 / Docker / PHP → Amazon RDS MySQL
-
-Amazon EC2: hosts the PHP/Apache web application in Docker.
-Amazon VPC: separates the public web layer from private database subnets.
-Amazon RDS MySQL: stores application data without a public database endpoint.
-Security Groups: allow MySQL access on port 3306 from the web server's security group only.
-AWS Systems Manager: provides server administration without opening inbound SSH.
-Caddy: handles HTTPS and reverse-proxies requests to the local web container.
+Browser → DuckDNS → Elastic IP → Caddy / HTTPS
+                                   ↓
+                         EC2 · Docker · PHP/Apache
+                                   ↓  MySQL :3306
+                         Amazon RDS · Private Subnet
+Layer	Implementation
+Web	Amazon EC2 running a Dockerized PHP / Apache application
+Networking	Custom VPC with public and private subnets across two Availability Zones
+Database	Amazon RDS MySQL, Single-AZ, with public access disabled
+Routing & TLS	DuckDNS, Elastic IP, and Caddy reverse proxy
+Administration	AWS Systems Manager Session Manager — no inbound SSH required
+Source Control	Private GitHub repository and read-only EC2 deploy key
+✨ Key Features
+Student experience: Sign up, sign in, browse courses, enroll, and access a personal dashboard.
+Admin experience: Manage courses and access the administration panel.
+Database migration: Moved application data from Docker MySQL to Amazon RDS.
+Responsive interface: Designed for desktop and mobile screens.
 🛠️ Tech Stack
-Application	Cloud & Deployment
-PHP · MySQL · HTML · CSS · JavaScript	AWS EC2 · Amazon RDS · VPC
-Apache · PDO	Docker Compose · Caddy · Systems Manager
-Responsive UI	Git · GitHub · DuckDNS
-🔐 Security Highlights
-Database hosted in private subnets, with public access disabled.
-MySQL access restricted by security-group-to-security-group rules.
-Application uses a dedicated database user instead of the RDS administrator.
-Credentials stored in an untracked .env file, never committed to Git.
-RDS encryption at rest and automated backups enabled.
-🚀 Deployment Notes
-The live deployment uses Amazon RDS inside a private VPC. Running the current Docker Compose configuration requires access to that database and the corresponding local .env settings; it is not a one-command standalone local demo. The original Docker MySQL service is retained temporarily as a rollback option.
+Category	Technologies
+Frontend	HTML5, CSS3, JavaScript, Tailwind CSS
+Backend	PHP, PDO, Apache
+Database	MySQL 8, Amazon RDS
+Infrastructure	AWS EC2, VPC, Security Groups, Elastic IP
+DevOps	Docker, Docker Compose, Caddy, Git, GitHub
+Operations	AWS Systems Manager, RDS automated backups
+🔐 Security & Reliability
+Database isolation: RDS is deployed in private subnets with no public database access.
+Least-privilege access: The application uses a dedicated MySQL account; port 3306 is restricted to the EC2 security group.
+Secrets handling: Database credentials are provided through an untracked .env file.
+Encrypted storage & backups: RDS encryption at rest and automated backups are enabled.
+Server access: AWS Systems Manager avoids exposing SSH to the internet.
+⚙️ Deployment Notes
+This repository documents the AWS-hosted deployment. The current Docker Compose configuration uses an external, private RDS endpoint and environment variables (RDS_DB_HOST, RDS_APP_PASSWORD). It is not a standalone local deployment without equivalent database access and configuration.
+
+The original Docker MySQL volume was retained during migration as a temporary rollback option. Never commit .env files, credentials, or database backups.
 
 <div align="center">
-Built and deployed by Naser Bader
+Built by Naser Bader
+Web Development · Cloud · DevOps
 
-StudentHub — a web application and hands-on AWS / DevOps portfolio project.
+GitHub Profile  ·  StudentHub Repository
+
+<sub>Designed, developed, and deployed as a hands-on cloud engineering portfolio project.</sub>
 
 </div>
