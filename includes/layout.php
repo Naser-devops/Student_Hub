@@ -38,6 +38,7 @@ function sh_head(string $title, string $base = "../", string $bodyClass = ""): v
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="HEyhCpdxnpOxeDfjQ53Z5OlvJLPGT24ZFVbpBwu0Kl4" />
     <meta name="theme-color" content="#05070f">
     <title><?= sh_e($title) ?> — StudentHub</title>
     <script>document.documentElement.className = "js";</script>

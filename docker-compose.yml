@@ -6,13 +6,10 @@ services:
     ports:
       - "127.0.0.1:8080:80"
     environment:
-      DB_HOST: db
+      DB_HOST: ${RDS_DB_HOST:?Set RDS_DB_HOST in your untracked .env file}
       DB_NAME: studenthub_db
-      DB_USER: studenthub
-      DB_PASS: ${DB_PASSWORD:?Set DB_PASSWORD in your untracked .env file}
-    depends_on:
-      db:
-        condition: service_healthy
+      DB_USER: studenthub_app
+      DB_PASS: ${RDS_APP_PASSWORD:?Set RDS_APP_PASSWORD in your untracked .env file}
     restart: unless-stopped
 
   db:
