@@ -1,90 +1,49 @@
-# StudentHub 🎓
 
-منصة تسجيل كورسات وتعلّم للطلاب — PHP + MySQL مع واجهة حديثة (Tailwind CSS · GSAP · Three.js · Chart.js).
+<div align="center">
+🎓 StudentHub
+Learn. Explore. Grow.
+A modern student learning platform built with PHP & MySQL and deployed on AWS with a private database architecture.
 
-> Student course registration & learning platform — PHP / MySQL with an immersive frontend.
+<p> <img src="https://img.shields.io/badge/PHP-Backend-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP" /> <img src="https://img.shields.io/badge/Docker-Containerized-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker" /> <img src="https://img.shields.io/badge/AWS-Cloud-FF9900?style=flat-square&logo=amazonwebservices&logoColor=white" alt="AWS" /> <img src="https://img.shields.io/badge/RDS-MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="Amazon RDS MySQL" /> </p>
+🌐 Live Website · 🏗️ Architecture · 📸 Screenshots
 
-## المزايا
-- تسجيل حساب وتسجيل دخول (جلسات + `password_hash` + حماية CSRF)
-- كتالوج كورسات، تسجيل الطالب في الكورسات، لوحة تحكم للطالب مع رسومات بيانية
-- لوحة إدارة: إضافة/تعديل/حذف الكورسات، وإدارة صلاحيات المستخدمين (admin / student)
+</div>
+✨ About the Project
+StudentHub is a responsive learning platform where students can discover courses, manage their learning, and track enrollments. An admin dashboard provides tools for managing course content.
 
-## المتطلبات
-- PHP 8.0 أو أحدث (Docker يستخدم PHP 8.2) مع `pdo_mysql` و `mbstring`
-- MySQL 5.7+ أو MariaDB 10.3+
-- اتصال إنترنت (المكتبات تُحمَّل من CDN)
+Beyond the application itself, this project demonstrates a two-tier AWS deployment: a Dockerized PHP web application on Amazon EC2 connected to Amazon RDS MySQL within private subnets.
 
-## التشغيل السريع (3 طرق — اختر واحدة)
-
-### 1) XAMPP (الأسهل على ويندوز)
-1. انسخ مجلد المشروع إلى `C:\xampp\htdocs\StudentHub`
-2. شغّل **Apache** و **MySQL** من لوحة XAMPP
-3. افتح محليًا فقط: `http://localhost/StudentHub/setup.php` واملأ النموذج (على XAMPP: المستخدم `root` وكلمة المرور فارغة)
-4. بعد النجاح **احذف ملف `setup.php`** ثم افتح `http://localhost/StudentHub/`
-
-### 2) سيرفر PHP المدمج (بدون Apache)
-```bash
-./start.sh        # لينكس / ماك
-start.bat         # ويندوز (انقر مرتين)
-```
-ثم أكمل المعالج في `http://localhost:8000/setup.php` (يلزم تشغيل MySQL).
-
-أو من الطرفية بدون متصفح:
-```bash
-php setup.php
-```
-لا تكتب كلمات المرور في وسائط الأوامر أو سجل الطرفية.
-
-### 3) Docker / AWS EC2 (تجربة محلية آمنة)
-```bash
-cp .env.example .env       # غيّر كلمات المرور في .env قبل التشغيل
-chmod 600 .env             # لينكس فقط
-docker compose config -q
-docker compose up -d --build
-docker compose exec web php setup.php
-```
-اتبع التعليمات التفاعلية لإنشاء أول Admin بدون تمرير كلمة مرور في سطر الأوامر.
-سيظهر الموقع على `http://127.0.0.1:8080` **من داخل نفس السيرفر فقط**.
-`setup.php` ممنوع من الوصول بالمتصفح في Docker، ولا تفتح منفذ 8080 للعامة.
-راجع **`DEPLOY_AWS_AR.md`** لاختبار الوصول من AWS عبر Session Manager ثم تجهيز HTTPS.
-
-## ماذا يفعل `setup.php`؟
-يفحص المتطلبات ← ينشئ قاعدة البيانات والجداول من `database/schema.sql` ← (اختياري) يضيف كورسات تجريبية ← ينشئ أول حساب Admin ← يكتب `config/config.local.php` ← يقفل نفسه عبر `config/installed.lock`.
-
-## هيكل المشروع
-```text
-StudentHub/
-├── setup.php               # معالج التثبيت (ملف التشغيل الرئيسي)
-├── index.php               # الصفحة الرئيسية
-├── database/               # schema.sql + sample-data.sql
-├── config/db.php           # الاتصال بقاعدة البيانات (env / config.local.php / افتراضي XAMPP)
-├── includes/layout.php     # قالب الواجهة المشترك
-├── assets/                 # css / js (theme.css, app.js, hero3d.js, dashboard.js)
-├── pages/                  # باقي الصفحات ومعالجات النماذج
-├── Dockerfile · docker-compose.yml · start.sh · start.bat
-└── .gitignore
-```
-
-## رفع المشروع إلى GitHub
-```bash
-cd StudentHub
-git init
-git add .
-git commit -m "Initial commit: StudentHub"
-git branch -M main
-git remote add origin https://github.com/<USERNAME>/StudentHub.git
-git push -u origin main
-```
-> الملف `.gitignore` يمنع رفع `config/config.local.php` (فيه كلمة مرور قاعدة البيانات) و `installed.lock`.
-> لا ترفع كلمات مرور حقيقية أبداً، ولا ملف `.env`. تحقق من `git status` قبل الرفع.
-
-## ملاحظات
-- أرقام التقدّم وساعات الدراسة في لوحة الطالب، ومحتوى الدروس/المدرّب/التقييمات في صفحة الكورس، **بيانات تجريبية** إلى أن تضيف جداولها (انظر تعليقات `PLACEHOLDER`).
-- شروط التسجيل في النموذج: الاسم من 4 كلمات، الجوال 14 رقماً، كلمة المرور 8 أحرف على الأقل.
+📸 Project Preview
+<div align="center"> <img src="assets/images/01-landing.png" alt="StudentHub landing page" width="100%" /> <sub>Landing page</sub> </div>
+<table> <tr> <td align="center" width="50%"><img src="assets/images/02-student-dashboard.png" alt="Student dashboard" width="100%" /><br /><b>Student Dashboard</b></td> <td align="center" width="50%"><img src="assets/images/03-course-catalog.png" alt="Course catalog" width="100%" /><br /><b>Course Catalog</b></td> </tr> <tr> <td align="center"><img src="assets/images/04-course-learning.png" alt="Course learning page" width="100%" /><br /><b>Learning Experience</b></td> <td align="center"><img src="assets/images/05-admin-panel.png" alt="Admin panel" width="100%" /><br /><b>Admin Panel</b></td> </tr> </table> <details> <summary><b>➕ View course management preview</b></summary> <br /> <img src="assets/images/06-add-course.png" alt="Add course screen" width="100%" /> </details>
+🏗️ AWS Architecture
 
 
-## ملاحظات أمنية للتجربة
-- لا تستخدم `docker compose down -v` على قاعدة تحتوي بيانات تريد الاحتفاظ بها؛ الخيار `-v` يحذف الـVolume.
-- لا تنشر Demo بلا HTTPS وتقييد وصول أو حسابات تجريبية.
-- القيم المعروضة للتقدم الدراسي تجريبية وليست بيانات LMS حقيقية.
-- ملفات التصميم الأصلية لم تُمس؛ راجع `SECURITY_FIXES_AR.md` لسجل الإصلاحات وحدود الاختبارات.
+Request flow: Browser → DuckDNS → Elastic IP → Caddy (HTTPS) → EC2 / Docker / PHP → Amazon RDS MySQL
+
+Amazon EC2: hosts the PHP/Apache web application in Docker.
+Amazon VPC: separates the public web layer from private database subnets.
+Amazon RDS MySQL: stores application data without a public database endpoint.
+Security Groups: allow MySQL access on port 3306 from the web server's security group only.
+AWS Systems Manager: provides server administration without opening inbound SSH.
+Caddy: handles HTTPS and reverse-proxies requests to the local web container.
+🛠️ Tech Stack
+Application	Cloud & Deployment
+PHP · MySQL · HTML · CSS · JavaScript	AWS EC2 · Amazon RDS · VPC
+Apache · PDO	Docker Compose · Caddy · Systems Manager
+Responsive UI	Git · GitHub · DuckDNS
+🔐 Security Highlights
+Database hosted in private subnets, with public access disabled.
+MySQL access restricted by security-group-to-security-group rules.
+Application uses a dedicated database user instead of the RDS administrator.
+Credentials stored in an untracked .env file, never committed to Git.
+RDS encryption at rest and automated backups enabled.
+🚀 Deployment Notes
+The live deployment uses Amazon RDS inside a private VPC. Running the current Docker Compose configuration requires access to that database and the corresponding local .env settings; it is not a one-command standalone local demo. The original Docker MySQL service is retained temporarily as a rollback option.
+
+<div align="center">
+Built and deployed by Naser Bader
+
+StudentHub — a web application and hands-on AWS / DevOps portfolio project.
+
+</div>
